@@ -4,8 +4,8 @@ import ProjectInterface from './project-interface';
 
 window.addEventListener('load', () => {
   const projects = Library.getProjects();
-
   LibraryInterface.displayLibrary(projects);
 
-  ProjectInterface.displayProject(projects[0]);
+  const defaultProject = projects[0];
+  ProjectInterface.displayProject(defaultProject);
 });
