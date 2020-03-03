@@ -1,0 +1,11 @@
+.project {
+  flex-grow: 1;
+  overflow: auto;
+
+  &__container {
+    max-width: 40rem;
+    width: 100%;
+    margin: 0 auto;
+    padding: 3rem 1rem;
+  }
+}

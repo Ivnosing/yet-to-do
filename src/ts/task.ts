@@ -1,16 +1,16 @@
 interface TaskArguments {
   title: string;
-  description: string;
-  dueDate: string;
-  priority: number;
+  description?: string;
+  dueDate?: string;
+  priority?: number;
   subtasks?: Task[];
 }
 
 class Task {
-  private title: string;
-  private description: string;
-  private dueDate: string;
-  private priority: number;
+  public title: string;
+  public description: string;
+  public dueDate: string;
+  public priority: number;
   private subtasks: Task[];
 
   constructor(config: TaskArguments) {
@@ -19,38 +19,6 @@ class Task {
     this.dueDate = config.dueDate;
     this.priority = config.priority;
     this.subtasks = config.subtasks || [];
-  }
-
-  public getTitle() {
-    return this.title;
-  }
-
-  public getDescription() {
-    return this.description;
-  }
-
-  public getDueDate() {
-    return this.dueDate;
-  }
-
-  public getPriority() {
-    return this.priority;
-  }
-
-  public setTitle(title: string) {
-    this.title = title;
-  }
-
-  public setDescription(description: string) {
-    this.description = description;
-  }
-
-  public setDueDate(dueDate: string) {
-    this.dueDate = dueDate;
-  }
-
-  public setPriority(priority: number) {
-    this.priority = priority;
   }
 
   public getSubtasks() {
@@ -70,4 +38,4 @@ class Task {
   }
 }
 
-export default Task;
+export { TaskArguments, Task };

@@ -1,0 +1,57 @@
+// Colors
+$primary: #e0e0e0;
+$primary-dark: #aeaeae;
+$primary-light: #ffffff;
+$primary-color: #000000;
+$secondary: #1e88e5;
+
+$padding-horizontal: 1rem;
+
+#sidebar {
+  flex-grow: 1;
+  max-width: 15rem;
+  background-color: $primary;
+  overflow: auto;
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 $padding-horizontal;
+    margin: 1rem 0 0.75rem;
+
+    h2 {
+      margin: 0 1rem 0 0;
+      font-size: 1rem;
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25em;
+      width: 1em;
+      height: 1em;
+      padding: 0;
+      margin: 0;
+      background: none;
+      border: 2px solid $secondary;
+      border-radius: 50%;
+      color: $secondary;
+      line-height: 0;
+      overflow: hidden;
+      cursor: pointer;
+    }
+  }
+
+  ul {
+    list-style: none;
+    margin: 0.5rem 0;
+    padding: 0;
+
+    li {
+      padding: 0.25rem $padding-horizontal;
+      cursor: pointer;
+    }
+  }
+}

@@ -1,18 +1,18 @@
-import Task from './task';
+import { Task } from './task';
 
 interface ProjectArguments {
   title: string;
-  description: string;
-  dueDate: string;
-  priority: number;
+  description?: string;
+  dueDate?: string;
+  priority?: number;
   tasks?: Task[];
 }
 
 class Project {
-  private title: string;
-  private description: string;
-  private dueDate: string;
-  private priority: number;
+  public title: string;
+  public description: string;
+  public dueDate: string;
+  public priority: number;
   private tasks: Task[];
 
   constructor(config: ProjectArguments) {
@@ -21,38 +21,6 @@ class Project {
     this.dueDate = config.dueDate;
     this.priority = config.priority;
     this.tasks = config.tasks || [];
-  }
-
-  public getTitle() {
-    return this.title;
-  }
-
-  public getDescription() {
-    return this.description;
-  }
-
-  public getDueDate() {
-    return this.dueDate;
-  }
-
-  public getPriority() {
-    return this.priority;
-  }
-
-  public setTitle(title: string) {
-    this.title = title;
-  }
-
-  public setDescription(description: string) {
-    this.description = description;
-  }
-
-  public setDueDate(dueDate: string) {
-    this.dueDate = dueDate;
-  }
-
-  public setPriority(priority: number) {
-    this.priority = priority;
   }
 
   public getTasks() {
@@ -72,4 +40,4 @@ class Project {
   }
 }
 
-export default Project;
+export { ProjectArguments, Project };

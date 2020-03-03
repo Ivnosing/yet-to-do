@@ -1,13 +1,10 @@
 const autoprefixer = require("autoprefixer");
-const babel = require('gulp-babel');
 const browserSyncInstance = require('browser-sync').create();
 const cssnano = require("cssnano");
 const gulp = require('gulp');
 const postcss = require("gulp-postcss");
 const rename = require("gulp-rename");
 const sass = require('gulp-sass');
-const ts = require('gulp-typescript');
-const tsProject = ts.createProject('tsconfig.json');
 const webpack = require('webpack');
 const webpackConfig = require("./webpack.config.js");
 const webpackStream = require('webpack-stream');
@@ -23,23 +20,9 @@ const css = () => {
 };
 
 const js = () => {
-  return tsProject.src()
-    // TypeScript
-    .pipe(tsProject())
-    .js
-
-    // Babel
-    .pipe(babel({
-      presets: ['@babel/env']
-    }))
-    
-    // .pipe(gulp.dest('dist'))
-
-    // Webpack
+  return gulp.src('src/ts/main.ts')
     .pipe(webpackStream(webpackConfig, webpack))
-    
     .pipe(gulp.dest('dist'))
-
     .pipe(browserSyncInstance.stream())
 };
 
@@ -55,7 +38,6 @@ const browserSync = (done) => {
 
 const browserSyncReload = (done) => {
   browserSyncInstance.reload();
-  done();
 }
 
 const watchFiles = () => {
