@@ -1,4 +1,7 @@
+import UniqueId from './unique-id';
+
 interface TaskArguments {
+  id?: string;
   title?: string;
   description?: string;
   dueDate?: Date;
@@ -7,7 +10,7 @@ interface TaskArguments {
   tasks?: Task[] | TaskArguments[];
 }
 
-class Task {
+class Task extends UniqueId {
   public title: string;
   public description: string;
   public dueDate: Date;
@@ -16,6 +19,7 @@ class Task {
   private tasks: Task[];
 
   constructor(config?: TaskArguments) {
+    super(config?.id);
     this.title = config?.title ?? '';
     this.description = config?.description;
     this.dueDate = typeof config?.dueDate === 'string'
@@ -44,7 +48,7 @@ class Task {
   }
 
   public getTaskIndex(task: Task): number {
-    return this.tasks.findIndex(t => t.title = task.title);
+    return this.tasks.findIndex(t => t.id === task.id);
   }
 
   public getTasks() {

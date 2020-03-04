@@ -180,12 +180,10 @@ const TaskInterface = (function () {
 
   const displayTask = (task: Task) => {
     if (task) {
-      console.log(task);
       setTask(task);
       setTitle(task);
       setDescription(task);
       getTaskListHeader();
-      console.log(task.getTasks());
       displayTaskList(task.getTasks());
     }
   }
