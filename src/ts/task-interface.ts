@@ -1,7 +1,7 @@
 import { Task } from './task';
 import { format } from 'date-fns';
 
-const TaskInterface = (function () {
+const TaskInterface = (() => {
   const projectContainer = document.querySelector('.project__container');
 
   let currentTask: Task;
@@ -10,7 +10,7 @@ const TaskInterface = (function () {
     currentTask = task;
 
     const projects = document.getElementById('sidebar')?.querySelector('ul')?.children;
-    
+
     for (const project of projects) {
       if (project.id === task.id) {
         project.classList.add('current');
@@ -74,13 +74,13 @@ const TaskInterface = (function () {
 
     const taskListHeader = document.createElement('header');
     taskListHeader.classList.add('task-list-header');
-    
+
     // TO DO: Checkbox
 
-    const title = document.createElement('h3');
-    title.innerText = 'Task list';
-    title.classList.add('task-list-header-title');
-    taskListHeader.appendChild(title);
+    const listTitle = document.createElement('h3');
+    listTitle.innerText = 'Task list';
+    listTitle.classList.add('task-list-header-title');
+    taskListHeader.appendChild(listTitle);
 
     const addButton = document.createElement('button');
     addButton.innerText = '+';
@@ -102,7 +102,7 @@ const TaskInterface = (function () {
         const submitFn = () => {
           const title = titleEl.value;
           const dueDate = dueDateEl.value;
-  
+
           if (title) {
             const task = new Task({ title, dueDate: dueDate ? new Date(dueDate) : undefined });
             const newTaskEvent = new CustomEvent('newtask', { detail: { task, currentTask } });
@@ -112,7 +112,7 @@ const TaskInterface = (function () {
           li.remove();
           creating = false;
         }
-  
+
         submit.onclick = submitFn;
 
         titleEl.onkeyup = (event: KeyboardEvent) => {
@@ -151,30 +151,29 @@ const TaskInterface = (function () {
       // const checkbox = document.createElement('input');
       // checkbox.setAttribute('type', 'checkbox');
       // li.appendChild(checkbox);
-  
+
       const title = document.createElement('span');
       title.innerText = task.title;
       title.classList.add('task-title');
       li.appendChild(title);
-  
+
       if (task.dueDate) {
         const dueDate = document.createElement('span');
         dueDate.innerText = format(task.dueDate, 'PPPp');
         dueDate.classList.add('due-date');
         li.appendChild(dueDate);
       }
-  
+
       const completeButton = document.createElement('button');
       completeButton.classList.add('complete-task');
       li.appendChild(completeButton);
-  
-      const complete = function (event: MouseEvent) {
+
+      const complete = (event: MouseEvent) => {
         event.stopPropagation();
-        console.log(task);
         const taskCompleteEvent = new CustomEvent('taskcomplete', { detail: task });
         document.dispatchEvent(taskCompleteEvent);
       }
-      
+
       completeButton.onclick = complete;
     }
 

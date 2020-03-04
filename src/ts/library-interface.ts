@@ -7,7 +7,7 @@ const LibraryInterface = (() => {
 
   let creating: boolean;
 
-  const createInputEdit = (title?: string, success?: Function, cancel?: Function) => {
+  const createInputEdit = (title?: string, success?: () => void, cancel?: () => void) => {
     const input = document.createElement('input');
     input.type = 'text';
     input.placeholder = 'Project name...';
@@ -86,10 +86,10 @@ const LibraryInterface = (() => {
             li.innerText = task.title;
           }
         );
-  
+
         li.innerText = '';
         li.appendChild(input);
-  
+
         input.focus();
       }
     }

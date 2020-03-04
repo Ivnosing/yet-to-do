@@ -30,7 +30,7 @@ class Task extends UniqueId {
     this.priority = config?.priority;
     this.completed = config?.completed ?? false;
     this.tasks = config.tasks
-      ? config.tasks[0] instanceof Task 
+      ? config.tasks[0] instanceof Task
         ? config.tasks as Task[]
         : (config.tasks as TaskArguments[]).map(task => new Task(task))
       : [];
