@@ -26,7 +26,25 @@ $padding-horizontal: 1rem;
 
     li {
       padding: 0.25rem $padding-horizontal;
+      outline: 0;
       cursor: pointer;
+
+      &:hover {
+        background-color: transparentize($secondary, 0.8);
+      }
+
+      &:focus {
+        background-color: transparentize($secondary, 0.6);
+      }
+
+      &.current {
+        background-color: $secondary;
+        color: white;
+      }
+      
+      input {
+        font-size: 1em;
+      }
     }
   }
 }

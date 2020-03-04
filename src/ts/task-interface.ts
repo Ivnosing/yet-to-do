@@ -6,16 +6,32 @@ const TaskInterface = (function () {
 
   let currentTask: Task;
 
-  const setTask = (task: Task) => currentTask = task;
+  const setTask = (task: Task) => {
+    currentTask = task;
+
+    const projects = document.getElementById('sidebar')?.querySelector('ul')?.children;
+    
+    for (const project of projects) {
+      if (project.id === task.id) {
+        project.classList.add('current');
+      } else {
+        project.classList.remove('current');
+      }
+    }
+  }
 
   const setTitle = (task: Task) => {
     const title = projectContainer.querySelector('h2');
+
     title.innerText = task?.title;
+
+    return title;
   }
 
   const setDescription = (task: Task) => {
+    let description = projectContainer.querySelector('p');
+
     if (task?.description) {
-      let description = projectContainer.querySelector('p');
 
       if (!description) {
         description = document.createElement('p');
@@ -23,7 +39,11 @@ const TaskInterface = (function () {
       }
 
       description.innerText = task.description;
+    } else {
+      description?.remove();
     }
+
+    return description;
   }
 
   const displayTaskList = (tasks: Task[]) => {
@@ -32,66 +52,86 @@ const TaskInterface = (function () {
   }
 
   const resetTaskList = () => {
-    const taskList = getTaskList();
+    const taskList = setTaskList();
 
     while (taskList.lastChild) {
       taskList.removeChild(taskList.lastChild)
     }
   }
 
-  const getTaskList = () => {    
-    let taskList = projectContainer.querySelector('ul');
+  const setTaskList = () => {
+    projectContainer.querySelector('ul')?.remove();
 
-    if (!taskList) {
-      taskList = document.createElement('ul');
-      taskList.classList.add('task-list');
-      projectContainer.appendChild(taskList);
-    }
+    const taskList = document.createElement('ul');
+    taskList.classList.add('task-list');
+    projectContainer.appendChild(taskList);
 
     return taskList;
   }
 
-  const getTaskListHeader = () => {
-    let taskListHeader = projectContainer.querySelector('header');
+  const setTaskListHeader = () => {
+    projectContainer.querySelector('header')?.remove();
 
-    if (!taskListHeader) {
-      taskListHeader = document.createElement('header');
-      taskListHeader.classList.add('task-list-header');
-      
-      // TO DO: Checkbox
+    const taskListHeader = document.createElement('header');
+    taskListHeader.classList.add('task-list-header');
+    
+    // TO DO: Checkbox
 
-      const title = document.createElement('h3');
-      title.innerText = 'Task list';
-      title.classList.add('task-list-header-title');
-      taskListHeader.appendChild(title);
+    const title = document.createElement('h3');
+    title.innerText = 'Task list';
+    title.classList.add('task-list-header-title');
+    taskListHeader.appendChild(title);
 
-      const addButton = document.createElement('button');
-      addButton.innerText = '+';
-      addButton.classList.add('add-item');
-      taskListHeader.appendChild(addButton);
+    const addButton = document.createElement('button');
+    addButton.innerText = '+';
+    addButton.classList.add('add-item');
+    taskListHeader.appendChild(addButton);
 
-      const addNewTask = () => {
+    let creating = false;
+
+    const addNewTask = () => {
+      if (!creating) {
+        creating = true;
+
         const li = editLi(addLi());
         const submit = li.querySelector('button');
 
-        submit.onclick = () => {
-          const title = (li.querySelector('.title-input') as HTMLInputElement).value;
-          const dueDate = (li.querySelector('.due-date-input') as HTMLInputElement).value;
+        const titleEl = li.querySelector('.title-input') as HTMLInputElement;
+        const dueDateEl = li.querySelector('.due-date-input') as HTMLInputElement;
 
-          li.remove();
-
+        const submitFn = () => {
+          const title = titleEl.value;
+          const dueDate = dueDateEl.value;
+  
           if (title) {
             const task = new Task({ title, dueDate: dueDate ? new Date(dueDate) : undefined });
             const newTaskEvent = new CustomEvent('newtask', { detail: { task, currentTask } });
             document.dispatchEvent(newTaskEvent);
           }
+
+          li.remove();
+          creating = false;
+        }
+  
+        submit.onclick = submitFn;
+
+        titleEl.onkeyup = (event: KeyboardEvent) => {
+          if (event.keyCode === 13) { // Press enter
+            submitFn();
+          }
+        }
+
+        dueDateEl.onkeyup = (event: KeyboardEvent) => {
+          if (event.keyCode === 13) { // Press enter
+            submitFn();
+          }
         }
       }
-
-      addButton.onclick = addNewTask;
-
-      projectContainer.appendChild(taskListHeader);
     }
+
+    addButton.onclick = addNewTask;
+
+    projectContainer.appendChild(taskListHeader);
 
     return taskListHeader;
   }
@@ -165,14 +205,8 @@ const TaskInterface = (function () {
     return li;
   }
 
-  const removeTask = (task: Task) => {
-    const taskList = getTaskList();
-    const index = currentTask.getTaskIndex(task);
-    taskList.removeChild(taskList.children[index]);
-  }
-
   const addLi = (task?: Task) => {
-    const taskList = getTaskList();
+    const taskList = setTaskList();
     const li = createLi(task);
     taskList.appendChild(li);
     return li;
@@ -183,7 +217,7 @@ const TaskInterface = (function () {
       setTask(task);
       setTitle(task);
       setDescription(task);
-      getTaskListHeader();
+      setTaskListHeader();
       displayTaskList(task.getTasks());
     }
   }

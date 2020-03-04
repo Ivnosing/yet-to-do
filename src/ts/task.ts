@@ -6,6 +6,7 @@ interface TaskArguments {
   description?: string;
   dueDate?: Date;
   priority?: number;
+  isDefault?: boolean;
   completed?: boolean;
   tasks?: Task[] | TaskArguments[];
 }
@@ -15,6 +16,7 @@ class Task extends UniqueId {
   public description: string;
   public dueDate: Date;
   public priority: number;
+  public readonly isDefault: boolean;
   private completed: boolean;
   private tasks: Task[];
 
@@ -32,6 +34,7 @@ class Task extends UniqueId {
         ? config.tasks as Task[]
         : (config.tasks as TaskArguments[]).map(task => new Task(task))
       : [];
+    this.isDefault = config?.isDefault;
   }
 
   public isCompleted(): boolean {

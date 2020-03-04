@@ -1,38 +1,65 @@
 import { Task } from './task';
 import Storage from './storage';
 
-// const defaultTaskConfig = {
-//   title: 'General',
-//   description: 'Default space for tasks.',
-//   tasks: []
-// };
+const Library = (() => {
+  const projects: Task[] = Storage.getTasksFromStorage();
 
-const Library = (function () {
-  const tasks: Task[] = Storage.getTasksFromStorage();
-
-  const getTasks = () => tasks || [];
-
-  const setTasks = () => {
-    Storage.setTasksInStorage(tasks);
-  }
-  
-  const addTask = (project: Task) => {
-    if (project) {
-      tasks.push(project);
+  const createDefaultProject = () => {
+    if (!projects.length) {
+      const defaultProject = new Task({
+        title: 'General',
+        description: 'Default space for projects.',
+        isDefault: true,
+        tasks: []
+      });
+      addProject(defaultProject);
     }
   }
 
-  const removeTask = (index: number) => {
-    if (index !== null && index > 0) {
-      tasks.splice(index, 1);
+  const getProjectIndex = (project: Task) => projects.findIndex(p => p.id === project?.id);
+
+  const getProjects = () => {
+    createDefaultProject();
+    return Array.from(projects);
+  };
+
+  const setProjects = () => {
+    Storage.setTasksInStorage(projects);
+  }
+
+  const addProject = (project: Task) => {
+    if (project) {
+      projects.push(project);
+      setProjects();
+    }
+  }
+
+  const updateProject = (project: Task) => {
+    if (project && !project.isDefault) {
+      const index = getProjectIndex(project);
+
+      if (index !== null && index > 0) {
+        projects[index] = project;
+      }
+    }
+  }
+
+  const removeProject = (project: Task) => {
+    if (project && !project.isDefault) {
+      const index = getProjectIndex(project);
+
+      if (index !== null && index > 0) {
+        projects.splice(index, 1);
+      }
     }
   }
 
   return {
-    getTasks,
-    setTasks,
-    addTask,
-    removeTask
+    getProjects,
+    setProjects,
+    addProject,
+    updateProject,
+    removeProject
   }
 })();
 

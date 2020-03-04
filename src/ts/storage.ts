@@ -2,15 +2,15 @@ import { Task, TaskArguments } from './task';
 
 const taskStorageKey = 'tasks';
 
-const Storage = (function () {
+const Storage = (() => {
   const getTasksFromStorage = (): Task[] => {
     let localTasks = localStorage.getItem(taskStorageKey);
-  
+
     if (!localTasks) {
       localStorage.setItem(taskStorageKey, JSON.stringify([]));
       localTasks = localStorage.getItem(taskStorageKey);
     }
-  
+
     return JSON.parse(localTasks).map((task: TaskArguments) => new Task(task));
   }
 

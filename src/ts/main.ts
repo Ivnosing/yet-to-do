@@ -4,23 +4,47 @@ import TaskInterface from './task-interface';
 import { Task } from './task';
 
 window.addEventListener('load', () => {
-  const tasks = Library.getTasks();
-  LibraryInterface.displayLibrary(tasks);
+  // Display projects in sidebar
+  displayLibrary();
 
-  const general = tasks[0];
-  TaskInterface.displayTask(general);
+  // Display default project
+  let currentProject = Library.getProjects()[0];
+  TaskInterface.displayTask(currentProject);
 
-  TaskInterface.newTask((e: CustomEvent<{ task: Task, currentTask: Task }>) => {
+  LibraryInterface.newProject((e: CustomEvent<string>) => {
+    const project = new Task({ title: e.detail });
+    Library.addProject(project);
+    displayLibrary();
+  });
+
+  LibraryInterface.projectSelect((e: CustomEvent<Task>) => {
+    currentProject = e.detail;
+    displayCurrentProject(currentProject);
+  });
+
+  LibraryInterface.projectTitle((e: CustomEvent<{ title: string; task: Task }>) => {
+    const { title, task } = e.detail;
+    task.title = title;
+    Library.updateProject(task);
+    currentProject = task;
+    displayCurrentProject(currentProject);
+  });
+
+  TaskInterface.newTask((e: CustomEvent<{ task: Task; currentTask: Task }>) => {
     const { task, currentTask } = e.detail;
     currentTask.addTask(task);
-    Library.setTasks();
-    TaskInterface.displayTask(general);
+    Library.setProjects();
+    displayCurrentProject(currentProject);
   });
 
   TaskInterface.taskComplete((e: CustomEvent<Task>) => {
     const task = e.detail;
     task.complete();
-    Library.setTasks();
-    TaskInterface.displayTask(general);
+    Library.setProjects();
+    displayCurrentProject(currentProject);
   });
 });
+
+const displayLibrary = () => LibraryInterface.displayLibrary(Library.getProjects());
+
+const displayCurrentProject = (currentProject: Task) => TaskInterface.displayTask(currentProject);
