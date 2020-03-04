@@ -3,6 +3,7 @@
     "./src/ts/main.ts"
   ],
   "compilerOptions": {
+    "moduleResolution": "Node",
     "target": "ESNext",
     "lib": [
       "ES5",

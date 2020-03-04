@@ -1,6 +1,15 @@
-@import 'components/main';
+@import 'helpers/colors';
+
+@import 'components/add-item';
+@import 'components/project';
+@import 'components/task-list-header';
+@import 'components/task-list';
 
 @import 'layout/sidebar';
+
+* {
+  box-sizing: border-box;
+}
 
 html {
   font: {

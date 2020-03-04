@@ -1,33 +1,38 @@
-import { Project, ProjectArguments } from './project';
+import { Task } from './task';
+import Storage from './storage';
 
-const defaultProjectConfig: ProjectArguments = {
-  title: 'General',
-  description: 'Default space for tasks.'
-};
+// const defaultTaskConfig = {
+//   title: 'General',
+//   description: 'Default space for tasks.',
+//   tasks: []
+// };
 
 const Library = (function () {
-  const projects: Project[] = [
-    new Project(defaultProjectConfig)
-  ];
+  const tasks: Task[] = Storage.getTasksFromStorage();
 
-  const getProjects = () => [...projects] || [];
+  const getTasks = () => tasks || [];
+
+  const setTasks = () => {
+    Storage.setTasksInStorage(tasks);
+  }
   
-  const addProject = (project: Project) => {
+  const addTask = (project: Task) => {
     if (project) {
-      projects.push(project);
+      tasks.push(project);
     }
   }
 
-  const removeProject = (index: number) => {
+  const removeTask = (index: number) => {
     if (index !== null && index > 0) {
-      projects.splice(index, 1);
+      tasks.splice(index, 1);
     }
   }
 
   return {
-    getProjects,
-    addProject,
-    removeProject
+    getTasks,
+    setTasks,
+    addTask,
+    removeTask
   }
 })();
 

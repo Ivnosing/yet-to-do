@@ -1,0 +1,10 @@
+.task-list-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 2rem 0 0.5rem;
+
+  &-title {
+    margin: 0;
+    font-size: .75rem;
+  }
+}

@@ -1,39 +1,65 @@
 interface TaskArguments {
-  title: string;
+  title?: string;
   description?: string;
-  dueDate?: string;
+  dueDate?: Date;
   priority?: number;
-  subtasks?: Task[];
+  completed?: boolean;
+  tasks?: Task[] | TaskArguments[];
 }
 
 class Task {
   public title: string;
   public description: string;
-  public dueDate: string;
+  public dueDate: Date;
   public priority: number;
-  private subtasks: Task[];
+  private completed: boolean;
+  private tasks: Task[];
 
-  constructor(config: TaskArguments) {
-    this.title = config.title;
-    this.description = config.description;
-    this.dueDate = config.dueDate;
-    this.priority = config.priority;
-    this.subtasks = config.subtasks || [];
+  constructor(config?: TaskArguments) {
+    this.title = config?.title ?? '';
+    this.description = config?.description;
+    this.dueDate = typeof config?.dueDate === 'string'
+      ? new Date(config.dueDate)
+      : config.dueDate;
+    this.priority = config?.priority;
+    this.completed = config?.completed ?? false;
+    this.tasks = config.tasks
+      ? config.tasks[0] instanceof Task 
+        ? config.tasks as Task[]
+        : (config.tasks as TaskArguments[]).map(task => new Task(task))
+      : [];
   }
 
-  public getSubtasks() {
-    return this.subtasks;
+  public isCompleted(): boolean {
+    return this.completed;
   }
 
-  public addSubtask(subtask: Task) {
-    if (subtask) {
-      this.subtasks.push(subtask);
+  public complete(): boolean {
+    return this.completed = true;
+  }
+
+  public completeTask(task: Task): void {
+    const index = this.getTaskIndex(task);
+    this.tasks[index].complete();
+  }
+
+  public getTaskIndex(task: Task): number {
+    return this.tasks.findIndex(t => t.title = task.title);
+  }
+
+  public getTasks() {
+    return this.tasks.filter(task => !task.isCompleted());
+  }
+
+  public addTask(task: Task) {
+    if (task) {
+      this.tasks.push(task);
     }
   }
 
-  public removeSubtask(index: number) {
+  public removeTask(index: number) {
     if (index !== null && index >= 0) {
-      this.subtasks.splice(index, 1);
+      this.tasks.splice(index, 1);
     }
   }
 }
