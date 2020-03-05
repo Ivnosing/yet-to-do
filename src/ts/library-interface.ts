@@ -37,13 +37,15 @@ const LibraryInterface = (() => {
           if (input.value) {
             const newProjectEvent = new CustomEvent('newproject', { detail: input.value })
             document.dispatchEvent(newProjectEvent);
-            creating = false;
           } else {
             li.remove();
           }
+
+          creating = false;
         },
         () => {
           li.remove();
+          creating = false;
         }
       );
 
