@@ -29,12 +29,13 @@ const TaskInterface = (() => {
   }
 
   const setDescription = (task: Task) => {
-    let description = projectContainer.querySelector('p');
+    let description = projectContainer.querySelector('.project-description') as HTMLParagraphElement;
 
     if (task?.description) {
 
       if (!description) {
         description = document.createElement('p');
+        description.classList.add('project-description');
         projectContainer.appendChild(description);
       }
 
@@ -47,8 +48,24 @@ const TaskInterface = (() => {
   }
 
   const displayTaskList = (tasks: Task[]) => {
-    resetTaskList();
-    tasks.forEach(task => addLi(task));
+    if (tasks.length) {
+      resetTaskList();
+      tasks.forEach(task => addLi(task));
+    } else {
+      noItemsMessage();
+    }
+  }
+
+  const noItemsMessage = () => {
+    projectContainer.querySelector('ul')?.remove();
+    projectContainer.querySelector('.no-items')?.remove();
+
+    const noItems = document.createElement('p');
+    noItems.innerText = 'No tasks in this project 🚀'
+    noItems.classList.add('no-items');
+    projectContainer.appendChild(noItems);
+
+    return noItems;
   }
 
   const resetTaskList = () => {
@@ -71,6 +88,7 @@ const TaskInterface = (() => {
 
   const setTaskList = () => {
     projectContainer.querySelector('ul')?.remove();
+    projectContainer.querySelector('.no-items')?.remove();
 
     const taskList = document.createElement('ul');
     taskList.classList.add('task-list');
@@ -121,6 +139,10 @@ const TaskInterface = (() => {
 
           li.remove();
           creating = false;
+
+          if (!getTaskList().children.length) {
+            noItemsMessage();
+          }
         }
 
         submit.onclick = submitFn;
