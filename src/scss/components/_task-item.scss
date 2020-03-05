@@ -1,0 +1,54 @@
+.task-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 0;
+  cursor: pointer;
+
+  &:not(:first-child) {
+    border-top: 1px solid $primary-dark;
+  }
+
+  .task-title {
+    cursor: text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: auto;
+  }
+
+  .due-date {
+    margin-left: 1rem;
+    color: $primary-dark;
+    font-size: 0.75em;
+  }
+
+  &.edit {
+
+    input {
+      padding: .5rem .25rem;
+      font-size: 1rem;
+      border: none;
+      box-shadow: 0 1px 0 0 $secondary;
+      outline: 0;
+
+      &:focus {
+        box-shadow: 0 2px 0 0 $secondary;
+      }
+    }
+
+    .title-input {
+      flex-grow: 1;
+      line-height: 1.5;
+    }
+
+    button[type="submit"] {
+      background: none;
+      border: none;
+      width: 2rem;
+      height: 2rem;
+      font-size: 1.125rem;
+      cursor: pointer;
+      margin: 0 0.125rem 0 1rem;
+    }
+  }
+}

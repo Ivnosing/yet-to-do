@@ -1,0 +1,35 @@
+button.complete-task {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc((1rem / 3) * 2);
+  width: 2em;
+  height: 2em;
+  padding: .25em;
+  margin-left: 1rem;
+  background: none;
+  border: none;
+  border-radius: 0.25em;
+  user-select: none;
+  outline: 0;
+  margin-right: 0.125rem;
+  cursor: pointer;
+
+  &:after {
+    content: '';
+    width: 1.25em;
+    height: 0.5em;
+    border-bottom: 4px solid $secondary;
+    border-left: 4px solid $secondary;
+    transform: rotate(-45deg);
+    margin-bottom: 0.125em;
+  }
+
+  &:hover {
+    background-color: transparentize($secondary, 0.8);
+  }
+
+  &:focus {
+    background-color: transparentize($secondary, 0.7);
+  }
+}

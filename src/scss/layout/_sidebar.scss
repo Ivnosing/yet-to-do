@@ -25,6 +25,7 @@ $padding-horizontal: 1rem;
     padding: 0;
 
     li {
+      position: relative;
       padding: 0.25rem $padding-horizontal;
       outline: 0;
       cursor: pointer;
@@ -40,6 +41,14 @@ $padding-horizontal: 1rem;
       &.current {
         background-color: $secondary;
         color: white;
+
+        .complete-task {
+          position: absolute;
+          right: 2rem;
+          font-size: 0.5rem;
+          top: calc(50% - 1em);
+          margin: 0;
+        }
       }
       
       input {

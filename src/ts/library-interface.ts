@@ -26,30 +26,42 @@ const LibraryInterface = (() => {
     return input;
   }
 
+  const createSubmitButton = (success?: () => void) => {
+    const submit = document.createElement('button');
+    submit.classList.add('complete-task');
+    submit.onclick = success;
+    return submit;
+  }
+
   addButton.onclick = () => {
     if (!creating) {
       creating = true;
 
+      const success = () => {
+        if (input.value) {
+          const newProjectEvent = new CustomEvent('newproject', { detail: input.value })
+          document.dispatchEvent(newProjectEvent);
+        } else {
+          li.remove();
+        }
+
+        creating = false;
+      }
+
       const li = document.createElement('li');
       const input = createInputEdit(
         '',
-        () => {
-          if (input.value) {
-            const newProjectEvent = new CustomEvent('newproject', { detail: input.value })
-            document.dispatchEvent(newProjectEvent);
-          } else {
-            li.remove();
-          }
-
-          creating = false;
-        },
+        success,
         () => {
           li.remove();
           creating = false;
         }
       );
 
+      const submit = createSubmitButton(success);
+
       li.appendChild(input);
+      li.appendChild(submit);
       ul.appendChild(li);
 
       input.focus();
@@ -76,13 +88,16 @@ const LibraryInterface = (() => {
 
     if (!task.isDefault) {
       li.ondblclick = () => {
-        const input = createInputEdit(task.title,
-          () => {
-            const projectTitleEvent = new CustomEvent('projecttitle', { detail: { title: input.value, task } });
-            document.dispatchEvent(projectTitleEvent);
-            input.remove();
-            li.innerText = input.value;
-          },
+        const success = () => {
+          const projectTitleEvent = new CustomEvent('projecttitle', { detail: { title: input.value, task } });
+          document.dispatchEvent(projectTitleEvent);
+          input.remove();
+          li.innerText = input.value;
+        }
+
+        const input = createInputEdit(
+          task.title,
+          success,
           () => {
             input.remove();
             li.innerText = task.title;
@@ -90,7 +105,11 @@ const LibraryInterface = (() => {
         );
 
         li.innerText = '';
+
         li.appendChild(input);
+
+        const submit = createSubmitButton(success);
+        li.appendChild(submit);
 
         input.focus();
       }
