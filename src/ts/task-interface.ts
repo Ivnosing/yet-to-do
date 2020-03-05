@@ -59,6 +59,16 @@ const TaskInterface = (() => {
     }
   }
 
+  const getTaskList = () => {
+    let taskList = projectContainer.querySelector('ul');
+
+    if (!taskList) {
+      taskList = setTaskList();
+    }
+
+    return taskList;
+  }
+
   const setTaskList = () => {
     projectContainer.querySelector('ul')?.remove();
 
@@ -205,7 +215,7 @@ const TaskInterface = (() => {
   }
 
   const addLi = (task?: Task) => {
-    const taskList = setTaskList();
+    const taskList = getTaskList();
     const li = createLi(task);
     taskList.appendChild(li);
     return li;
